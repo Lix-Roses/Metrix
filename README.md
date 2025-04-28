@@ -1,98 +1,101 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+Descripccion del proyecto
+Este proyecto es una aplicación backend construida con NestJS que permite gestionar y almacenar los envíos de contacto a través de un formulario web. El sistema recibe datos como el nombre, correo electrónico, teléfono y mensaje de los usuarios. Además, realiza validaciones en tiempo real y envía notificaciones por correo electrónico tanto al usuario como a los administradores del sistema. Los registros de contacto se almacenan en una base de datos MySQL, permitiendo consultas específicas como la cantidad de envíos realizados en el día.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Instrucciones de configuración (variables de entorno para BD, email, etc.).
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+primero, el script utilizado en la base de datos de mysql fue el siguiente 
 
-## Description
+create database contact;
+use contact;
+CREATE TABLE contact_submissions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fullName VARCHAR(100) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    country VARCHAR(100),
+    phone VARCHAR(20),
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Pasos para crear las variables de entorno 
+Crea un archivo .env en la raíz del proyecto.
 
-## Project setup
+Agrega las siguientes variables de entorno a tu archivo .env.
 
-```bash
-$ npm install
-```
+Variables para la Base de Datos (MySQL):
 
-## Compile and run the project
+DB_HOST: Dirección del host de la base de datos (localhost).
 
-```bash
-# development
-$ npm run start
+DB_PORT: Puerto de la base de datos (3306).
 
-# watch mode
-$ npm run start:dev
+DB_USERNAME: Usuario para acceder a la base de datos (root).
 
-# production mode
-$ npm run start:prod
-```
+DB_PASSWORD: Contraseña del usuario de la base de datos (root).
 
-## Run tests
+DB_NAME: Nombre de la base de datos ( contact).
 
-```bash
-# unit tests
-$ npm run test
+Variables para el Envío de Correos Electrónicos (Nodemailer):
 
-# e2e tests
-$ npm run test:e2e
+SMTP_HOST: Dirección del servidor SMTP (smtp-pulse.com).
 
-# test coverage
-$ npm run test:cov
-```
+SMTP_PORT: Puerto del servidor SMTP (465).
 
-## Deployment
+SMTP_SECURITY: Tipo de seguridad del servidor SMTP (puede ser SSL o TLS).
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+SMTP_USER: Usuario para el servidor SMTP (tu dirección de correo electrónico).
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+SMTP_PASS: Contraseña del usuario del servidor SMTP.
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+SMTP_FROM: Dirección de correo electrónico del remitente.
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+SMTP_REPLY_TO: Dirección de correo para la respuesta del cliente (usualmente el mismo que SMTP_USER).
 
-## Resources
+Correo del Administrador (para notificaciones):
 
-Check out a few resources that may come in handy when working with NestJS:
+ADMIN_EMAIL: Correo electrónico del administrador (se utilizará para recibir notificaciones de nuevos contactos).
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Instalacion y configuracion de dependencias 
 
-## Support
+orden de uso de inicio a fin 
+1. npm install
+2. npm install --save @nestjs/typeorm typeorm mysql2
+3. npm i nodemailer
+3. npm install class-transformer
+4. npm install dotenv
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Inicializacion del proyecto, para empezar a utiliar el proyecto se utilizara la variable 
+npm run start
 
-## Stay in touch
+si queremos verlo desde el desarollo usararemos 
+npm run start:dev
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Para realizar las pruebas, en caso de usar visual code studio, instalamos la extencion de thunder cliente (basicamente postman pero desde vcs) el cual tiene su misma funcionalidad, para ingresar datos a la base de datos se utiliara la siguiente url  localhost:3000/api/contact-submissions utilizando el metodo POST, y para hacer nuestra consulta a l abase de datos, utilizaremos el metodo GET con el siguiente url localhost:3000/api/metrics/daily-submissions
 
-## License
+En caso de usar postman directamente, ambas url deberian funcionar de la misma manera.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+para realizar pruebas podemos usar el siguiente JSON 
+
+{
+  "fullName": "Carlos",
+  "email": "correoejemplo@outlook.com",
+  "country": "Colombia",
+  "phone": 3003718468,
+  "message": "Necesito ponerme en contacto para adquirir sus servicio"
+
+
+}
+
+
+Preguntas de razonamiento: 
+
+1.¿Por qué elegiste Express o NestJS?
+respuesta: Escogí NestJS por la experiencia previa manejando el framework. Al ser modular, permite separar las funciones en módulos independientes, evitando la sobrecarga de archivos y mejorando el orden del proyecto. La estructura se basa en capas (Controller, Service, Repository), donde cada módulo gestiona una funcionalidad específica. Para el esquema de la base de datos elegí una tabla simple de contactos, optimizada para consultas rápidas diarias, enfocándome en simplicidad y eficiencia.
+
+2.Escalabilidad y Mejoras
+Respuesta: por medio de base de datos realizaria indices y asigndo las columnas pertinentes con el fin de realizar una mayor cantidad de consultas. En el codigo buscaria realizar optimizaciones y validaciones las cuales permitan a el codigo actuar y funcionar con una menor carga.
+
+3.Alternativas y Trade-offs 
+Respuesta: Por seguridad utilizaria el JSON web token para implementar autentificaciones al momento de implementar consultas.
+
+4.Endpoint de Métricas
+Respuesta: A la hora de hacer la logica de GET, busque establecer una franja horaria, en el dia actual, es decir, decirle desde que horas inicia el dia y hasta que horas acaba, una vez realizado esto, busque hacer un conteo de la cantidad de entradras que cumplieran la condicion en mi base de datos, segun las que recibiera las contaria para ser utilizadas en el mensaje final, es decir, "Conteo: "x"" cantidad de entradas.
