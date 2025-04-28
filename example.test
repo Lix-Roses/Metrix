@@ -1,0 +1,7 @@
+SERVIDOR_SMTP=sandbox.smtp.mailtrap.io
+PUERTO_SMTP=2525
+SEGURIDAD_SMTP=SSL
+USUARIO_SMTP=3ca7b7a5b85b7e
+CONTRASENIA_SMTP=bf209cecc0c7f3
+FROM_SMTP=copropietarios@icce.nh-hotels.com
+email_admin=angelgalindo131@gmail.com
